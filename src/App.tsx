@@ -1,64 +1,53 @@
-import { Route, Routes } from "react-router-dom"
 import "./App.css"
 import { ROUTES } from "./components/utils/routeConfig.tsx";
 import Header from "./components/header"
-import { Suspense } from "react";
-import { lazy } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import React from "react"
 
 
 
-function renderRouter(route: any) {
-  const Component = lazy(route.component);
-  const element = (
-    <Suspense fallback="Component is Laoding....">
-      <Component />
-    </Suspense>
-  );
-  return element;
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return isAuthenticated ? children : <Navigate to="/" />;
 }
+
+
 
 function App() {
   return (
     <div>
       <Header />
       <Routes>
-        {ROUTES.map((route) => {
-          if (route.children) {
+        {ROUTES.map(({ path, component: Component, protected: isProtected }, index) => {
+          if (!Component) {
             return (
               <Route
-                key={route.path}
-                path={route.path}
-                element={renderRouter(route)}
-              >
-                {route.children.map((childRoute) => {
-                  if (childRoute.index) {
-                    return (
-                      <Route
-                        key="index"
-                        index
-                        element={renderRouter(childRoute)}
-                      />
-                    );
-                  }
-                  return (
-                    <Route
-                      key={childRoute.path}
-                      path={childRoute.path}
-                      element={renderRouter(childRoute)}
-                    />
-                  );
-                })}
-              </Route>
+                key={index}
+                path={path}
+                element={<Navigate to="/" />}
+              />
             );
           }
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={renderRouter(route)}
-            />
+          const LazyComponent = React.lazy(Component);
+          const lazyElement = (
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <LazyComponent />
+            </React.Suspense>
           );
-        })}
+
+          const routeElement = isProtected ? (
+            <ProtectedRoute>{lazyElement}</ProtectedRoute>
+          ) : (
+            lazyElement
+          );
+
+          return <Route key={index} path={path} element={routeElement} />;
+        }
+        )}
       </Routes>
     </div>
   );
