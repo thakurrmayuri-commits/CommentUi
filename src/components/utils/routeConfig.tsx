@@ -20,29 +20,8 @@ export const ROUTES = [
 
   },
   {
-    path: "/blog",
-    component: () => import("../Blog/blog.tsx"),
-
-  },
-  {
-    path: "/blog",
-    component: () => import("../Blog/blog.tsx"),
-
-  },
-  {
-    path: "/createblog",
-    component: () => import("../Blog/createBlog.tsx"),
-
-  },
-  {
-    path: "/blogs/:id",
-    component: () => import("../Blog/blogDetails.tsx"),
-
-  },
-  {
     path: "/userspaces",
-    component: () => import("/Users/ruchi/Documents/React_JS/Project_1/practice2weeks/2weeksPractice/src/UserSpace/userSpace.tsx"),
-
+    component: () => import("../UserSpace/userSpace.tsx"),
   },
   {
     path: "/recipes",
