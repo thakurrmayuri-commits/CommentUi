@@ -32,6 +32,7 @@ const UserForm = (prop: userProp) => {
         };
         setIsPending(true);
         console.log("user details: ", blog)
+        console.log("user:", user)
 
         fetch(`http://localhost:8000/reviews`, {
             method: "post",
@@ -199,6 +200,7 @@ const UserForm = (prop: userProp) => {
                 <p>User First Name: {prop.userName.firstName}</p>
                 <p>User Last Name: {prop.userName.lastName}</p>
                 <p>Comment: {prop.userComment}</p>
+                {!isPending && <div>Ready!</div> || <div>Try again!</div>}
             </div>
         </div>
 
