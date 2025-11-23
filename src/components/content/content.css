@@ -1,0 +1,12 @@
+.useDetails {
+    width: auto;
+    box-shadow: 2px black;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 2px;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: grey;
+    cursor: pointer;
+}
